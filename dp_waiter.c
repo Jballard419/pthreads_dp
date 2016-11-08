@@ -138,8 +138,7 @@ static void *dp_thread(void *arg)
      */
     think_rnd = (rand() % MAX_PHIL_THINK_PERIOD);
     eat_rnd   = (rand() % MAX_PHIL_EAT_PERIOD);
-     int chopstick_1=0;
-     int chopstick_2=0;
+
 
 
     /*
@@ -156,29 +155,14 @@ static void *dp_thread(void *arg)
      * Grab both chopsticks: ASYMMETRIC and WAITER SOLUTION
      */
      pthread_mutex_lock(&waiter);
-     if(!(me->can_eat))
+
+     if(!(available_chopsticks[left_chop(me)] && available_chopsticks[right_chop(me)]))
      {
         pthread_cond_wait(&(me->can_eat), &waiter);
 
      }
-     taken= 0;
-     for (int i = 0; i < NUM_CHOPS; i++) {
-       if(available_chopsticks[i]==1)
-       {
-         available_chopsticks[i]=0;
-         taken ++;
-         if(taken ==1)
-            {chopstick_1 = i;}
-        chopstick_2 = i;
-       }
-       if(i == NUM_CHOPS -1)
-       {
-
-       }
-       if(taken==2)
-        break;
-
-     }
+    available_chopsticks[left_chop(me)]= 0;
+    available_chopsticks[right_chop(me)] =0
 
     // mark_my_chopsticks_taken;
     pthread_mutex_unlock(&waiter);
@@ -203,25 +187,15 @@ static void *dp_thread(void *arg)
      pthread_mutex_lock(&waiter);
      //mark_my_chopstick_free;
      taken =0;
-     available_chopsticks[chopstick_1] =1;
-     available_chopsticks[chopstick_2]=1;
-    //  for (int i = 0; i < NUM_CHOPS; i++) {
-    //    if(available_chopsticks[i]==0)
-    //    {
-    //      available_chopsticks[i]=1;
-    //      taken ++;
-    //    }
-     //
-    //    if(taken==2)
-    //     break;
-     //
-    //  }
+     available_chopsticks[left_chop(me)]= 1;
+     available_chopsticks[right_chop(me)] =1;
+
 
 
      pthread_mutex_unlock(&waiter);
 
-    // pthread_mutex_unlock(right_chop(me));
-    // pthread_mutex_unlock(left_chop(me));
+    pthread_mutex_unlock(right_chop(me));
+    pthread_mutex_unlock(left_chop(me));
 
     /*
      * Update my progress in current session and for all time.
