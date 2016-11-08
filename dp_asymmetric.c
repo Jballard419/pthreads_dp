@@ -158,7 +158,7 @@ static void *dp_thread(void *arg)
        pthread_mutex_lock(right_chop(me));
      } else {
        pthread_mutex_lock(right_chop(me));
-       pthread_mutex_lock(left_chop(me));s
+       pthread_mutex_lock(left_chop(me));
      }
 
 
