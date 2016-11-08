@@ -156,13 +156,13 @@ static void *dp_thread(void *arg)
      */
      pthread_mutex_lock(&waiter);
 
-     if(!(available_chopsticks[left_chop(me)] && available_chopsticks[right_chop(me)]))
+     if(!(available_chopsticks[(me->id == (NUM_PHILS-1) ? 0 : (me->id)+1)] && available_chopsticks[(me->id == 0 ? (NUM_PHILS-1) : (me->id)-1)]))
      {
         pthread_cond_wait(&(me->can_eat), &waiter);
 
      }
-    available_chopsticks[left_chop(me)]= 0;
-    available_chopsticks[right_chop(me)] =0
+    available_chopsticks[(me->id == (NUM_PHILS-1) ? 0 : (me->id)+1)]= 0;
+    available_chopsticks[(me->id == 0 ? (NUM_PHILS-1) : (me->id)-1)] =0
 
     // mark_my_chopsticks_taken;
     pthread_mutex_unlock(&waiter);
@@ -187,8 +187,8 @@ static void *dp_thread(void *arg)
      pthread_mutex_lock(&waiter);
      //mark_my_chopstick_free;
      taken =0;
-     available_chopsticks[left_chop(me)]= 1;
-     available_chopsticks[right_chop(me)] =1;
+     available_chopsticks[(me->id == (NUM_PHILS-1) ? 0 : (me->id)+1)]= 1;
+     available_chopsticks[(me->id == 0 ? (NUM_PHILS-1) : (me->id)-1)] =1;
 
 
 
