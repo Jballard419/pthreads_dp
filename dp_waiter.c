@@ -173,7 +173,7 @@ static void *dp_thread(void *arg)
        }
        if(i == NUM_CHOPS -1)
        {
-         me->can_eat = 0;
+
        }
        if(taken==2)
         break;
@@ -216,7 +216,6 @@ static void *dp_thread(void *arg)
     //     break;
      //
     //  }
-     me->can_eat =1;
 
 
      pthread_mutex_unlock(&waiter);
