@@ -156,9 +156,9 @@ static void *dp_thread(void *arg)
      * Grab both chopsticks: ASYMMETRIC and WAITER SOLUTION
      */
      pthread_mutex_lock(&waiter);
-     if(!(can_eat))
+     if(!(me->can_eat))
      {
-        pthread_cond_wait(&(me->can_eat), &waiter)
+        pthread_cond_wait(&(me->can_eat), &waiter);
 
      }
      taken= 0;
@@ -173,7 +173,7 @@ static void *dp_thread(void *arg)
        }
        if(i == NUM_CHOPS -1)
        {
-         can_eat = 0;
+         me->can_eat = 0;
        }
        if(taken==2)
         break;
@@ -216,7 +216,7 @@ static void *dp_thread(void *arg)
     //     break;
      //
     //  }
-     can_eat =1;
+     me->can_eat =1;
 
 
      pthread_mutex_unlock(&waiter);
